@@ -21,12 +21,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,15 +50,20 @@ fun SearchCityScreen(
     viewModel: SearchCityViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
             is SearchCitySideEffect.NavigateToCity -> onNavigateToCity(effect.cityId)
-            is SearchCitySideEffect.ShowError -> Unit // TODO: show snackbar
+            is SearchCitySideEffect.ShowError -> coroutineScope.launch { // TODO сделать единый экст для обработки исключений
+                snackbarHostState.showSnackbar(effect.message)
+            }
         }
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(title = {
                 Text(
