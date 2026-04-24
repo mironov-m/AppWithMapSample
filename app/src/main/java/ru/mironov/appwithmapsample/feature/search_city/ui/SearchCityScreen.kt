@@ -99,7 +99,7 @@ internal fun SearchCityContent(
         }
     }
 
-    LaunchedEffect(shouldLoadMore) {
+    LaunchedEffect(shouldLoadMore, state.cities.lastOrNull()?.id) {
         if (shouldLoadMore && state.cities.isNotEmpty()) {
             onLoadMore()
         }
