@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -28,15 +29,17 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
@@ -52,13 +55,28 @@ fun SearchCityScreen(
     val state by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
             is SearchCitySideEffect.NavigateToCity -> onNavigateToCity(effect.cityId)
-            is SearchCitySideEffect.ShowError -> coroutineScope.launch { // TODO сделать единый экст для обработки исключений
+            is SearchCitySideEffect.ShowError -> coroutineScope.launch {
                 snackbarHostState.showSnackbar(effect.message)
             }
+        }
+    }
+
+    val shouldLoadMore by remember {
+        derivedStateOf {
+            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
+            val totalItems = listState.layoutInfo.totalItemsCount
+            lastVisible >= totalItems - 3
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore) {
+        if (shouldLoadMore && state.cities.isNotEmpty()) {
+            viewModel.onLoadMore()
         }
     }
 
@@ -121,59 +139,76 @@ fun SearchCityScreen(
                 ),
             )
 
-            when (val cities = state.cities) {
-                is Resource.Loading -> {
+            when {
+                state.citiesResponse is Resource.Loading && state.cities.isEmpty() -> {
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        contentAlignment = Alignment.TopCenter
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
                     }
                 }
-                is Resource.Success -> {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(cities.value, key = { it.id }) { city ->
+
+                state.cities.isNotEmpty() -> {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 8.dp)
+                    ) {
+                        items(state.cities, key = { it.id }) { city ->
                             ListItem(
                                 headlineContent = {
                                     Text(
                                         text = city.name,
                                         style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                 },
                                 supportingContent = {
                                     Text(
                                         text = city.country,
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                 },
                                 leadingContent = {
                                     Icon(
                                         imageVector = Icons.Default.LocationOn,
                                         contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                        tint = MaterialTheme.colorScheme.primary,
                                     )
                                 },
-                                modifier = Modifier.clickable { viewModel.onCitySelected(city.id) }
+                                modifier = Modifier.clickable {
+                                    viewModel.onCitySelected(city.id)
+                                }
                             )
                             HorizontalDivider()
                         }
+
+                        if (state.citiesResponse is Resource.Loading) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        }
                     }
                 }
-                is Resource.Error -> {
+
+                state.query.isNotEmpty() && state.citiesResponse is Resource.Success -> {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 16.dp),
-                        contentAlignment = Alignment.TopCenter
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Ошибка загрузки: ${cities.throwable.message}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            text = "Ничего не найдено",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
