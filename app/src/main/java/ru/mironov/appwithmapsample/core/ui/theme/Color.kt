@@ -1,4 +1,4 @@
-package ru.mironov.appwithmapsample.ui.theme
+package ru.mironov.appwithmapsample.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

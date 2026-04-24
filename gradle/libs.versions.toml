@@ -1,10 +1,15 @@
 [versions]
 agp = "8.13.2"
 kotlin = "2.0.21"
+ksp = "2.0.21-1.0.28"
+hilt = "2.51.1"
+hiltNavigationCompose = "1.2.0"
 coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.12.2"
 composeBom = "2024.09.00"
+orbit-mvi = "11.0.0"
+navigationCompose = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -17,8 +22,24 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 
+# Navigation
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+
+# Orbit MVI
+orbit-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-mvi" }
+orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-mvi" }
+orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-mvi" }
+orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbit-mvi" }
+
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
