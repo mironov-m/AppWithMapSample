@@ -71,6 +71,9 @@ class SearchCityViewModel @Inject constructor(
                             currentPage = if (resource is Resource.Success) page else state.currentPage,
                         )
                     }
+                    if (resource is Resource.Error) {
+                        postSideEffect(SearchCitySideEffect.ShowError(resource.throwable))
+                    }
                 }
             }
         }
