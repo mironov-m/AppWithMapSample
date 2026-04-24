@@ -33,14 +33,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import ru.mironov.appwithmapsample.core.ui.rememberErrorHandler
 import ru.mironov.appwithmapsample.core.ui.theme.AppWithMapSampleTheme
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
@@ -58,14 +57,12 @@ fun SearchCityScreen(
 ) {
     val state by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
+    val showError = rememberErrorHandler(snackbarHostState)
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
             is SearchCitySideEffect.NavigateToCity -> onNavigateToCity(effect.cityId)
-            is SearchCitySideEffect.ShowError -> coroutineScope.launch {
-                snackbarHostState.showSnackbar(effect.error.message.orEmpty()) // TODO
-            }
+            is SearchCitySideEffect.ShowError -> showError(effect.error)
         }
     }
 
