@@ -14,6 +14,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import ru.mironov.appwithmapsample.BuildConfig
+import ru.mironov.appwithmapsample.core.network.plugin.NetworkExceptionMapper
 import javax.inject.Singleton
 
 @Module
@@ -23,6 +24,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(): HttpClient = HttpClient(OkHttp) {
+        install(NetworkExceptionMapper)
         install(ContentNegotiation) {
             json(
                 Json {
