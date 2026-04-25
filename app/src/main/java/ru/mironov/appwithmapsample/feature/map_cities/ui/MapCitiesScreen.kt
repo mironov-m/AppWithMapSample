@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -97,52 +98,6 @@ fun MapCitiesScreen(
                 city = city,
                 onDismiss = { selectedCity = null },
             )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CityDetailsBottomSheet(
-    city: City,
-    onDismiss: () -> Unit,
-) {
-    val context = LocalContext.current
-    val sheetState = rememberModalBottomSheetState()
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.surface,
-        shape = MaterialTheme.shapes.large,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Dimens.PaddingMedium)
-                .padding(bottom = Dimens.PaddingLarge),
-            verticalArrangement = Arrangement.spacedBy(Dimens.PaddingMedium),
-        ) {
-            Text(
-                text = stringResource(R.string.city_details_title),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            CityInfoFields(city = city)
-            Button(
-                onClick = { searchInBrowser(context, city.name) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = Dimens.PaddingSmall),
-                shape = MaterialTheme.shapes.extraLarge,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                ),
-            ) {
-                Text(
-                    text = stringResource(R.string.city_details_button_search),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package ru.mironov.appwithmapsample.feature.search_city.ui
 
+import android.content.res.Resources
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +36,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import ru.mironov.appwithmapsample.R
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -210,21 +213,21 @@ private fun CityListItem(
         headlineContent = {
             Text(
                 text = city.name,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface,
             )
         },
         supportingContent = {
             Text(
                 text = formatCountryName(city.country),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         },
         leadingContent = {
             Icon(
-                imageVector = Icons.Default.LocationOn,
+                painter  = painterResource(id = R.drawable.ic_map),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
             )
         },
         modifier = Modifier.clickable {

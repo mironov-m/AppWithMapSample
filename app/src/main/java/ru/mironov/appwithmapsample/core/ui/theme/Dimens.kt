@@ -7,7 +7,7 @@ object Dimens {
     val PaddingMedium = 16.dp
     val PaddingLarge = 24.dp
 
-    val ListItemIconSize = 24.dp
+    val ButtonHeight = 72.dp
 
     val PaginationThreshold = 3
 }
