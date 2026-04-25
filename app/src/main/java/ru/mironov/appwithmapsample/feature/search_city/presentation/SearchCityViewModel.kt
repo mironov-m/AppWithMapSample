@@ -53,7 +53,7 @@ class SearchCityViewModel @Inject constructor(
                     intent {
                         reduce {
                             state.copy(
-                                cities = emptyList(),
+                                cities = emptySet(),
                                 citiesResponse = null,
                                 currentPage = 1,
                             )
@@ -76,7 +76,7 @@ class SearchCityViewModel @Inject constructor(
                         if (error is NoInternetException) {
                             loadCities(
                                 query = state.query,
-                                page = state.currentPage,
+                                page = state.currentPage + 1,
                                 append = state.cities.isNotEmpty(),
                             )
                         }
@@ -92,7 +92,7 @@ class SearchCityViewModel @Inject constructor(
                     reduce {
                         val newCities = when {
                             resource is Resource.Success && append -> state.cities + resource.value.items
-                            resource is Resource.Success -> resource.value.items
+                            resource is Resource.Success -> resource.value.items.toSet()
                             else -> state.cities
                         }
                         state.copy(

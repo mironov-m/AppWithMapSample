@@ -7,7 +7,7 @@ import ru.mironov.appwithmapsample.data.cities.models.City
 data class SearchCityState(
     val query: String = "",
     val citiesResponse: Resource<CitiesResponse>? = null,
-    val cities: List<City> = emptyList(),
+    val cities: Set<City> = emptySet(),
     val currentPage: Int = 1,
 ) {
     val hasMorePages: Boolean

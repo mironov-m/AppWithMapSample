@@ -137,7 +137,7 @@ internal fun SearchCityContent(
             when {
                 state.cities.isNotEmpty() -> {
                     CityList(
-                        cities = state.cities,
+                        cities = state.cities.toList(),
                         isLoading = state.citiesResponse is Resource.Loading,
                         listState = listState,
                         onCitySelected = onCitySelected,
@@ -315,7 +315,7 @@ private fun SearchCityScreenPreview() {
 @Composable
 private fun SearchCityScreenWithResultsPreview() {
     AppWithMapSampleTheme {
-        val sampleCities = listOf(
+        val sampleCities = setOf(
             City(id = 1, name = "Москва", country = "Россия", lat = 55.75, lon = 37.62, pop = 12_600_000),
             City(id = 2, name = "Санкт-Петербург", country = "Россия", lat = 59.93, lon = 30.32, pop = 5_400_000),
             City(id = 3, name = "Новосибирск", country = "Россия", lat = 55.03, lon = 82.92, pop = 1_600_000),
@@ -324,7 +324,7 @@ private fun SearchCityScreenWithResultsPreview() {
             state = SearchCityState(
                 query = "Москва",
                 citiesResponse = Resource.Success(
-                    CitiesResponse(items = sampleCities, limit = 10, page = 1, total = 3)
+                    CitiesResponse(items = sampleCities.toList(), limit = 10, page = 1, total = 3)
                 ),
                 cities = sampleCities,
             ),
