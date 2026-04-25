@@ -30,7 +30,7 @@ import androidx.navigation.NavHostController
 import ru.mironov.appwithmapsample.R
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
 import ru.mironov.appwithmapsample.core.utils.formatCountryName
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
+import ru.mironov.appwithmapsample.data.cities.models.City
 import java.text.NumberFormat
 import java.util.Locale
 

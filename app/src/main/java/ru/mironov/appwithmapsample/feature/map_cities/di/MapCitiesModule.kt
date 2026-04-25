@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import ru.mironov.appwithmapsample.feature.map_cities.data.MapCitiesApi
-import ru.mironov.appwithmapsample.feature.map_cities.data.MapCitiesApiImpl
+import ru.mironov.appwithmapsample.data.cities.MapCitiesApi
+import ru.mironov.appwithmapsample.data.cities.MapCitiesApiImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)

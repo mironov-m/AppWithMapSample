@@ -1,8 +1,8 @@
 package ru.mironov.appwithmapsample.feature.search_city.presentation
 
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
-import ru.mironov.appwithmapsample.feature.search_city.data.models.CitiesResponse
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
+import ru.mironov.appwithmapsample.data.cities.models.CitiesResponse
+import ru.mironov.appwithmapsample.data.cities.models.City
 
 data class SearchCityState(
     val query: String = "",

@@ -3,7 +3,7 @@ package ru.mironov.appwithmapsample.app.navigation
 import android.os.Bundle
 import androidx.navigation.NavType
 import kotlinx.serialization.json.Json
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
+import ru.mironov.appwithmapsample.data.cities.models.City
 
 val CityNavType = object : NavType<City>(isNullableAllowed = false) {
     override fun get(bundle: Bundle, key: String): City? =

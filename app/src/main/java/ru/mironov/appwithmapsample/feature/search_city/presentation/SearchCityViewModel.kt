@@ -17,9 +17,9 @@ import org.orbitmvi.orbit.viewmodel.container
 import ru.mironov.appwithmapsample.core.android.InternetConnectionObserver
 import ru.mironov.appwithmapsample.core.network.exception.NoInternetException
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
-import ru.mironov.appwithmapsample.feature.search_city.data.models.CitiesResponse
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
-import ru.mironov.appwithmapsample.feature.search_city.domain.CitiesRepository
+import ru.mironov.appwithmapsample.data.cities.models.CitiesResponse
+import ru.mironov.appwithmapsample.data.cities.models.City
+import ru.mironov.appwithmapsample.domain.cities.CitiesRepository
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)

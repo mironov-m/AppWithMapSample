@@ -1,4 +1,4 @@
-package ru.mironov.appwithmapsample.feature.map_cities.data
+package ru.mironov.appwithmapsample.data.cities
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -6,7 +6,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import ru.mironov.appwithmapsample.feature.map_cities.data.models.MapCitiesResponse
+import ru.mironov.appwithmapsample.data.cities.models.MapCitiesResponse
 import javax.inject.Inject
 
 interface MapCitiesApi {

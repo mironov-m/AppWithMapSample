@@ -1,18 +1,11 @@
-package ru.mironov.appwithmapsample.feature.map_cities.data.models
+package ru.mironov.appwithmapsample.data.cities.models
 
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable
 
 @Keep
 @Serializable
-data class MapCitiesResponse(
-    val count: Int,
-    val items: List<MapCity>
-)
-
-@Keep
-@Serializable
-data class MapCity(
+data class City(
     val id: Long,
     val name: String,
     val country: String,

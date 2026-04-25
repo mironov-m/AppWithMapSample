@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import ru.mironov.appwithmapsample.app.MainScreen
+import ru.mironov.appwithmapsample.data.cities.models.City
 import ru.mironov.appwithmapsample.feature.city_details.ui.CityDetailsScreen
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
 import kotlin.reflect.typeOf
 
 @Composable

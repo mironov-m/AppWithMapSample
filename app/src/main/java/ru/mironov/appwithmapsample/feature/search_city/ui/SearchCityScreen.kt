@@ -48,8 +48,8 @@ import ru.mironov.appwithmapsample.core.ui.theme.AppWithMapSampleTheme
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
 import ru.mironov.appwithmapsample.core.utils.formatCountryName
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
-import ru.mironov.appwithmapsample.feature.search_city.data.models.CitiesResponse
+import ru.mironov.appwithmapsample.data.cities.models.CitiesResponse
+import ru.mironov.appwithmapsample.data.cities.models.City
 import ru.mironov.appwithmapsample.feature.search_city.presentation.SearchCitySideEffect
 import ru.mironov.appwithmapsample.feature.search_city.presentation.SearchCityState
 import ru.mironov.appwithmapsample.feature.search_city.presentation.SearchCityViewModel

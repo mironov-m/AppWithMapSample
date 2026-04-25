@@ -1,7 +1,7 @@
 package ru.mironov.appwithmapsample.app.navigation
 
 import kotlinx.serialization.Serializable
-import ru.mironov.appwithmapsample.feature.search_city.data.models.City
+import ru.mironov.appwithmapsample.data.cities.models.City
 
 sealed interface Destination {
 
