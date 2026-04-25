@@ -16,3 +16,11 @@ fun <T : Any> asResource(block: suspend () -> T): Flow<Resource<T>> = flow {
 }
 
 fun <T : Any> Flow<T>.asResource(): Flow<Resource<T>> = map { (Resource.Success(it)) }
+
+fun <T : Any, R : Any> Resource<T>.map(block: (value: T) -> R): Resource<R> {
+    return when (this) {
+        is Resource.Success -> Resource.Success(block(value))
+        is Resource.Loading -> Resource.Loading()
+        is Resource.Error -> Resource.Error(throwable)
+    }
+}

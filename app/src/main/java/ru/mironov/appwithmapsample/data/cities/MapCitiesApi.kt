@@ -12,7 +12,7 @@ import javax.inject.Inject
 interface MapCitiesApi {
 
     suspend fun getCitiesInArea(
-        query: String,
+        query: String?,
         radius: Int,
         centerLat: Double,
         centerLng: Double
@@ -26,7 +26,7 @@ class MapCitiesApiImpl @Inject constructor(
 ) : MapCitiesApi {
 
     override suspend fun getCitiesInArea(
-        query: String,
+        query: String?,
         radius: Int,
         centerLat: Double,
         centerLng: Double

@@ -27,15 +27,14 @@ class CitiesRepository @Inject constructor(
     }
 
     fun getCitiesInArea(
-        query: String,
-        radius: Int,
+        radiusMeters: Int = 50_000,
         centerLat: Double,
         centerLng: Double
     ): Flow<Resource<MapCitiesResponse>> {
         return asResource {
             mapCitiesApi.getCitiesInArea(
-                query = query,
-                radius = radius,
+                query = null,
+                radius = radiusMeters,
                 centerLat = centerLat,
                 centerLng = centerLng,
             )

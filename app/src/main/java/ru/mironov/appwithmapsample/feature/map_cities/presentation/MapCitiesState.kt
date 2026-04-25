@@ -1,0 +1,12 @@
+package ru.mironov.appwithmapsample.feature.map_cities.presentation
+
+import com.google.android.gms.maps.model.LatLng
+import ru.mironov.appwithmapsample.core.utils.resource.Resource
+import ru.mironov.appwithmapsample.data.cities.models.City
+
+private val locationMoscow = LatLng(55.754133, 37.6194807)
+
+data class MapCitiesState(
+    val centralLocation: LatLng = locationMoscow,
+    val cities: Resource<List<City>>? = null,
+)
