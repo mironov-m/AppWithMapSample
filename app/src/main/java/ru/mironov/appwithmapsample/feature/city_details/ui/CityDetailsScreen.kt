@@ -1,8 +1,6 @@
 package ru.mironov.appwithmapsample.feature.city_details.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,22 +15,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import ru.mironov.appwithmapsample.R
+import ru.mironov.appwithmapsample.core.android.searchInBrowser
+import ru.mironov.appwithmapsample.core.ui.CityInfoFields
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
-import ru.mironov.appwithmapsample.core.utils.formatCountryName
 import ru.mironov.appwithmapsample.data.cities.models.City
-import java.text.NumberFormat
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,20 +54,13 @@ fun CityDetailsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Column(
+            CityInfoFields(
+                city = city,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = Dimens.PaddingMedium)
                     .padding(top = Dimens.PaddingMedium),
-                verticalArrangement = Arrangement.spacedBy(Dimens.PaddingMedium)
-            ) {
-                LabeledField(label = stringResource(R.string.city_details_label_city), value = city.name)
-                LabeledField(label = stringResource(R.string.city_details_label_country), value = formatCountryName(city.country))
-                LabeledField(
-                    label = stringResource(R.string.city_details_label_population),
-                    value = stringResource(R.string.city_details_population_format, city.pop.formatNumber())
-                )
-            }
+            )
 
             Button(
                 onClick = { searchInBrowser(context, city.name) },
@@ -95,30 +81,4 @@ fun CityDetailsScreen(
             }
         }
     }
-}
-
-@Composable
-private fun LabeledField(label: String, value: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(Dimens.PaddingSmall / 2)) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-    }
-}
-
-private fun Long.formatNumber(): String {
-    return NumberFormat.getNumberInstance(Locale.forLanguageTag("ru"))
-        .format(this)
-}
-
-private fun searchInBrowser(context: Context, cityName: String) {
-    val uri = Uri.parse("https://www.google.com/search?q=${Uri.encode(cityName)}")
-    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
 }
