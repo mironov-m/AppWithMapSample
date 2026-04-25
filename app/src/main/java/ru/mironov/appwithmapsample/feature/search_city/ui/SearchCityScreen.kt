@@ -37,8 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import ru.mironov.appwithmapsample.app.navigation.Destination
 import ru.mironov.appwithmapsample.core.ui.rememberErrorHandler
 import ru.mironov.appwithmapsample.core.ui.theme.AppWithMapSampleTheme
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
@@ -52,7 +54,7 @@ import ru.mironov.appwithmapsample.feature.search_city.presentation.SearchCityVi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchCityScreen(
-    onNavigateToCity: (Long) -> Unit = {},
+    navController: NavHostController,
     viewModel: SearchCityViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -61,7 +63,8 @@ fun SearchCityScreen(
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
-            is SearchCitySideEffect.NavigateToCity -> onNavigateToCity(effect.cityId)
+            is SearchCitySideEffect.NavigateToCity -> navController
+                .navigate(Destination.CityDetails(effect.city))
             is SearchCitySideEffect.ShowError -> showError(effect.error)
         }
     }
@@ -83,7 +86,7 @@ internal fun SearchCityContent(
     snackbarHostState: SnackbarHostState,
     onQueryChanged: (String) -> Unit,
     onClearQuery: () -> Unit,
-    onCitySelected: (Long) -> Unit,
+    onCitySelected: (City) -> Unit,
     onLoadMore: () -> Unit,
 ) {
     val listState = rememberLazyListState()
@@ -198,7 +201,7 @@ private fun SearchBar(
 @Composable
 private fun CityListItem(
     city: City,
-    onCitySelected: (Long) -> Unit,
+    onCitySelected: (City) -> Unit,
 ) {
     ListItem(
         headlineContent = {
@@ -222,7 +225,7 @@ private fun CityListItem(
             )
         },
         modifier = Modifier.clickable {
-            onCitySelected(city.id)
+            onCitySelected(city)
         }
     )
     HorizontalDivider()
@@ -233,7 +236,7 @@ private fun CityList(
     cities: List<City>,
     isLoading: Boolean,
     listState: LazyListState,
-    onCitySelected: (Long) -> Unit,
+    onCitySelected: (City) -> Unit,
 ) {
     LazyColumn(
         state = listState,

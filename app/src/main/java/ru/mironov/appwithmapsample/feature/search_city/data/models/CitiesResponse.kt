@@ -1,7 +1,9 @@
 package ru.mironov.appwithmapsample.feature.search_city.data.models
 
+import androidx.annotation.Keep
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class CitiesResponse(
     val items: List<City>,
@@ -10,6 +12,7 @@ data class CitiesResponse(
     val total: Long
 )
 
+@Keep
 @Serializable
 data class City(
     val id: Long,

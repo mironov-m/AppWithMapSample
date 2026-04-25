@@ -18,6 +18,7 @@ import ru.mironov.appwithmapsample.core.android.InternetConnectionObserver
 import ru.mironov.appwithmapsample.core.network.exception.NoInternetException
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
 import ru.mironov.appwithmapsample.feature.search_city.data.models.CitiesResponse
+import ru.mironov.appwithmapsample.feature.search_city.data.models.City
 import ru.mironov.appwithmapsample.feature.search_city.domain.CitiesRepository
 import javax.inject.Inject
 
@@ -36,6 +37,11 @@ class SearchCityViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     init {
+        initCitiesRequest()
+        initRetryAfterConnectionActivated(internetConnectionObserver)
+    }
+
+    private fun initCitiesRequest() {
         viewModelScope.launch {
             queryFlow
                 .onEach { query ->
@@ -59,7 +65,9 @@ class SearchCityViewModel @Inject constructor(
                     }
                 }
         }
+    }
 
+    private fun initRetryAfterConnectionActivated(internetConnectionObserver: InternetConnectionObserver) {
         viewModelScope.launch {
             internetConnectionObserver.observe()
                 .filter { connectionAvailable -> connectionAvailable }
@@ -116,7 +124,7 @@ class SearchCityViewModel @Inject constructor(
         loadCities(state.query, state.currentPage + 1, append = true)
     }
 
-    fun onCitySelected(cityId: Long) = intent {
-        postSideEffect(SearchCitySideEffect.NavigateToCity(cityId))
+    fun onCitySelected(city: City) = intent {
+        postSideEffect(SearchCitySideEffect.NavigateToCity(city))
     }
 }

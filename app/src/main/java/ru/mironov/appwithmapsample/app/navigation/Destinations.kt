@@ -1,6 +1,13 @@
 package ru.mironov.appwithmapsample.app.navigation
 
-sealed class Destination(val route: String) {
+import kotlinx.serialization.Serializable
+import ru.mironov.appwithmapsample.feature.search_city.data.models.City
 
-    data object SearchCity : Destination("search_city")
+sealed interface Destination {
+
+    @Serializable
+    data object SearchCity : Destination
+
+    @Serializable
+    data class CityDetails(val city: City) : Destination
 }
