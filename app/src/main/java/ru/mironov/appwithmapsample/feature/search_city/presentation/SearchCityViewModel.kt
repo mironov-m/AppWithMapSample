@@ -5,14 +5,19 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.mironov.appwithmapsample.core.android.InternetConnectionObserver
+import ru.mironov.appwithmapsample.core.network.exception.NoInternetException
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
+import ru.mironov.appwithmapsample.feature.search_city.data.models.CitiesResponse
 import ru.mironov.appwithmapsample.feature.search_city.domain.CitiesRepository
 import javax.inject.Inject
 
@@ -20,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchCityViewModel @Inject constructor(
     private val citiesRepository: CitiesRepository,
+    internetConnectionObserver: InternetConnectionObserver,
 ) :
     ViewModel(),
     ContainerHost<SearchCityState, SearchCitySideEffect> {
@@ -49,7 +55,24 @@ class SearchCityViewModel @Inject constructor(
                         }
                     }
                     if (query.isNotBlank()) {
-                        loadCities(query, page = 1, append = false)
+                        loadCities(query = query, page = 1, append = false)
+                    }
+                }
+        }
+
+        viewModelScope.launch {
+            internetConnectionObserver.observe()
+                .filter { connectionAvailable -> connectionAvailable }
+                .collect {
+                    intent {
+                        val error = (state.citiesResponse as? Resource.Error<CitiesResponse>)?.throwable
+                        if (error is NoInternetException) {
+                            loadCities(
+                                query = state.query,
+                                page = state.currentPage,
+                                append = state.cities.isNotEmpty(),
+                            )
+                        }
                     }
                 }
         }
