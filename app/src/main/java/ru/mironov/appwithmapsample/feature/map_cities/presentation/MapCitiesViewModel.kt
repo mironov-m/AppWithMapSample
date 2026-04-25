@@ -17,6 +17,7 @@ import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
 import ru.mironov.appwithmapsample.core.utils.resource.map
+import ru.mironov.appwithmapsample.data.cities.models.City
 import ru.mironov.appwithmapsample.domain.cities.CitiesRepository
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -75,5 +76,9 @@ class MapCitiesViewModel @Inject constructor(
             reduce { state.copy(radiusInMeters = (diagonalMeters / 1.5).roundToInt()) }
             locationFlow.value = bounds.center
         }
+    }
+
+    fun onCitySelected(city: City) = intent {
+        postSideEffect(MapCitiesSideEffect.NavigateToCity(city))
     }
 }

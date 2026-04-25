@@ -83,7 +83,7 @@ fun MainScreen(outerNavController: NavHostController) {
                 SearchCityScreen(outerNavController)
             }
             composable<BottomTab.CityMap> {
-                MapCitiesScreen()
+                MapCitiesScreen(outerNavController)
             }
         }
     }
