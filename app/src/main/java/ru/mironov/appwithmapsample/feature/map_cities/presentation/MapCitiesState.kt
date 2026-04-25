@@ -8,5 +8,6 @@ private val locationMoscow = LatLng(55.754133, 37.6194807)
 
 data class MapCitiesState(
     val centralLocation: LatLng = locationMoscow,
-    val cities: Resource<List<City>>? = null,
+    val citiesResource: Resource<List<City>>? = null,
+    val cities: Set<City> = emptySet(),
 )

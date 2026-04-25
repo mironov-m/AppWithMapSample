@@ -2,18 +2,24 @@ package ru.mironov.appwithmapsample.feature.map_cities.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLngBounds
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.mironov.appwithmapsample.core.utils.resource.Resource
 import ru.mironov.appwithmapsample.core.utils.resource.map
 import ru.mironov.appwithmapsample.domain.cities.CitiesRepository
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MapCitiesViewModel @Inject constructor(
     private val citiesRepository: CitiesRepository,
@@ -23,20 +29,41 @@ class MapCitiesViewModel @Inject constructor(
 
     override val container = container<MapCitiesState, MapCitiesSideEffect>(MapCitiesState())
 
+    private val locationFlow = MutableStateFlow(container.stateFlow.value.centralLocation)
+
     init {
-        initCitiesRequest()
+        initUpdateLocationFlow()
     }
 
-    private fun initCitiesRequest() {
-        intent {
-            citiesRepository.getCitiesInArea(
-                centerLat = state.centralLocation.latitude,
-                centerLng = state.centralLocation.longitude,
-            ).collect { resource ->
-                intent {
-                    reduce { state.copy(cities = resource.map { it.items }) }
+    private fun initUpdateLocationFlow() {
+        viewModelScope.launch {
+            locationFlow
+                .debounce(800)
+                .distinctUntilChanged()
+                .onEach { location ->
+                    intent { reduce { state.copy(centralLocation = location) } }
                 }
-            }
+                .flatMapConcat { location ->
+                    citiesRepository.getCitiesInArea(
+                        centerLat = location.latitude,
+                        centerLng = location.longitude,
+                    )
+                }
+                .collect { resource ->
+                    intent {
+                        reduce {
+                            val newCities = (resource as? Resource.Success)?.value?.items.orEmpty()
+                            state.copy(
+                                citiesResource = resource.map { it.items },
+                                cities = state.cities + newCities
+                            )
+                        }
+                    }
+                }
         }
+    }
+
+    fun onVisibleRegionChanged(bounds: LatLngBounds) {
+        locationFlow.value = bounds.center
     }
 }

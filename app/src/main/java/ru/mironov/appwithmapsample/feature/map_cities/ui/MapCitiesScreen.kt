@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import ru.mironov.appwithmapsample.core.ui.rememberErrorHandler
 import ru.mironov.appwithmapsample.core.utils.formatCountryName
-import ru.mironov.appwithmapsample.core.utils.resource.Resource
 import ru.mironov.appwithmapsample.feature.map_cities.presentation.MapCitiesSideEffect
 import ru.mironov.appwithmapsample.feature.map_cities.presentation.MapCitiesViewModel
 
@@ -52,8 +52,14 @@ fun MapCitiesScreen(
                 modifier = Modifier.weight(1f).fillMaxHeight(),
                 cameraPositionState = cameraPositionState,
             ) {
-                val cities = (state.cities as? Resource.Success)?.value.orEmpty()
-                cities.forEach { city ->
+                LaunchedEffect(cameraPositionState.isMoving, cameraPositionState.position) {
+                    if (!cameraPositionState.isMoving) {
+                        val bounds = cameraPositionState.projection?.visibleRegion?.latLngBounds
+                        bounds?.let(viewModel::onVisibleRegionChanged)
+                    }
+                }
+
+                state.cities.forEach { city ->
                     Marker(
                         state = MarkerState(position = LatLng(city.lat, city.lon)),
                         title = city.name,
