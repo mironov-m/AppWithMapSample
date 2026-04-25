@@ -14,6 +14,7 @@ orbit-mvi = "11.0.0"
 navigationCompose = "2.9.0"
 googleMaps = "2.0.1"
 mapsCompose = "4.4.1"
+mapsUtils = "3.13.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 # Google services
 google-mapsplatform = { group = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", name = "secrets-gradle-plugin", version.ref = "googleMaps" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
+android-maps-utils = { group = "com.google.maps.android", name = "android-maps-utils", version.ref = "mapsUtils" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

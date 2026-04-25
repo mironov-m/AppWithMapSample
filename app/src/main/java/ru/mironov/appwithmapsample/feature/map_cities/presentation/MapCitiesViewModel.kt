@@ -3,6 +3,7 @@ package ru.mironov.appwithmapsample.feature.map_cities.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -18,6 +19,7 @@ import ru.mironov.appwithmapsample.core.utils.resource.Resource
 import ru.mironov.appwithmapsample.core.utils.resource.map
 import ru.mironov.appwithmapsample.domain.cities.CitiesRepository
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -47,6 +49,7 @@ class MapCitiesViewModel @Inject constructor(
                     citiesRepository.getCitiesInArea(
                         centerLat = location.latitude,
                         centerLng = location.longitude,
+                        radiusMeters = container.stateFlow.value.radiusInMeters
                     )
                 }
                 .collect { resource ->
@@ -64,6 +67,13 @@ class MapCitiesViewModel @Inject constructor(
     }
 
     fun onVisibleRegionChanged(bounds: LatLngBounds) {
-        locationFlow.value = bounds.center
+        intent {
+            val diagonalMeters = SphericalUtil.computeDistanceBetween(
+                bounds.southwest,
+                bounds.northeast
+            )
+            reduce { state.copy(radiusInMeters = (diagonalMeters / 1.5).roundToInt()) }
+            locationFlow.value = bounds.center
+        }
     }
 }

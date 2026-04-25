@@ -10,4 +10,5 @@ data class MapCitiesState(
     val centralLocation: LatLng = locationMoscow,
     val citiesResource: Resource<List<City>>? = null,
     val cities: Set<City> = emptySet(),
+    val radiusInMeters: Int = 50_000,
 )

@@ -80,4 +80,5 @@ dependencies {
     // Google services
     implementation(libs.google.mapsplatform)
     implementation(libs.maps.compose)
+    implementation(libs.android.maps.utils)
 }
