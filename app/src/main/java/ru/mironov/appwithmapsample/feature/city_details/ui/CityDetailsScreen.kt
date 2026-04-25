@@ -17,9 +17,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
@@ -36,6 +40,7 @@ fun CityDetailsScreen(
     city: City,
     navController: NavHostController,
 ) {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,7 +77,7 @@ fun CityDetailsScreen(
             }
 
             Button(
-                onClick = { TODO() },
+                onClick = { searchInBrowser(context, city.name) },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
@@ -111,4 +116,9 @@ private fun LabeledField(label: String, value: String) {
 private fun Long.formatNumber(): String {
     return NumberFormat.getNumberInstance(Locale.forLanguageTag("ru"))
         .format(this)
+}
+
+private fun searchInBrowser(context: Context, cityName: String) {
+    val uri = Uri.parse("https://www.google.com/search?q=${Uri.encode(cityName)}")
+    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
 }

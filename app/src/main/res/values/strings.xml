@@ -15,4 +15,8 @@
     <string name="city_details_label_population">Население</string>
     <string name="city_details_button_search">Поиск информации о городе</string>
     <string name="city_details_population_format">%1$s чел</string>
+
+    <!-- Errors -->
+    <string name="error_no_internet">Нет подключения к интернету</string>
+    <string name="error_unknown">Что-то пошло не так, попробуйте еще раз</string>
 </resources>
