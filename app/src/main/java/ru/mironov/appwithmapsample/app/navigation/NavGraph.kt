@@ -25,7 +25,10 @@ fun NavGraph(navController: NavHostController) {
             typeMap = mapOf(typeOf<City>() to CityNavType)
         ) { backStackEntry ->
             val dest = backStackEntry.toRoute<Destination.CityDetails>()
-            CityDetailsScreen(city = dest.city)
+            CityDetailsScreen(
+                city = dest.city,
+                navController = navController,
+            )
         }
     }
 }

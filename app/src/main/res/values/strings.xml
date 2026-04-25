@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">AppWithMapSample</string>
+
+    <!-- SearchCityScreen -->
+    <string name="search_city_title">Список городов</string>
+    <string name="search_city_hint">Введите название города</string>
+    <string name="search_city_clear_desc">Очистить</string>
+    <string name="search_city_empty">Ничего не найдено</string>
+
+    <!-- CityDetailsScreen -->
+    <string name="city_details_title">Информация о городе</string>
+    <string name="city_details_back_desc">Назад</string>
+    <string name="city_details_label_city">Город</string>
+    <string name="city_details_label_country">Страна</string>
+    <string name="city_details_label_population">Население</string>
+    <string name="city_details_button_search">Поиск информации о городе</string>
+    <string name="city_details_population_format">%1$s чел</string>
 </resources>

@@ -35,7 +35,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ru.mironov.appwithmapsample.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import org.orbitmvi.orbit.compose.collectAsState
@@ -110,7 +112,7 @@ internal fun SearchCityContent(
         topBar = {
             TopAppBar(title = {
                 Text(
-                    text = "Список городов",
+                    text = stringResource(R.string.search_city_title),
                     style = MaterialTheme.typography.titleLarge,
                 )
             })
@@ -162,7 +164,7 @@ private fun SearchBar(
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
-                text = "Введите название города",
+                text = stringResource(R.string.search_city_hint),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -172,7 +174,7 @@ private fun SearchBar(
                 IconButton(onClick = onClearQuery) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = "Очистить",
+                        contentDescription = stringResource(R.string.search_city_clear_desc),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -273,7 +275,7 @@ private fun EmptySearchResult() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Ничего не найдено",
+            text = stringResource(R.string.search_city_empty),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
