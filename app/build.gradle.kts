@@ -76,4 +76,8 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.logging)
+
+    // Google services
+    implementation(libs.google.mapsplatform)
+    implementation(libs.maps.compose)
 }
