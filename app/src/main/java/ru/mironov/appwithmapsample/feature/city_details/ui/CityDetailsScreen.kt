@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import ru.mironov.appwithmapsample.R
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
+import ru.mironov.appwithmapsample.core.utils.formatCountryName
 import ru.mironov.appwithmapsample.feature.search_city.data.models.City
 import java.text.NumberFormat
 import java.util.Locale
@@ -63,7 +64,7 @@ fun CityDetailsScreen(
                 verticalArrangement = Arrangement.spacedBy(Dimens.PaddingMedium)
             ) {
                 LabeledField(label = stringResource(R.string.city_details_label_city), value = city.name)
-                LabeledField(label = stringResource(R.string.city_details_label_country), value = city.country)
+                LabeledField(label = stringResource(R.string.city_details_label_country), value = formatCountryName(city.country))
                 LabeledField(
                     label = stringResource(R.string.city_details_label_population),
                     value = stringResource(R.string.city_details_population_format, city.pop.formatNumber())
@@ -108,5 +109,6 @@ private fun LabeledField(label: String, value: String) {
 }
 
 private fun Long.formatNumber(): String {
-    return NumberFormat.getNumberInstance(Locale.forLanguageTag("ru")).format(this)
+    return NumberFormat.getNumberInstance(Locale.forLanguageTag("ru"))
+        .format(this)
 }

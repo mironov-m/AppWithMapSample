@@ -46,6 +46,7 @@ import ru.mironov.appwithmapsample.app.navigation.Destination
 import ru.mironov.appwithmapsample.core.ui.rememberErrorHandler
 import ru.mironov.appwithmapsample.core.ui.theme.AppWithMapSampleTheme
 import ru.mironov.appwithmapsample.core.ui.theme.Dimens
+import ru.mironov.appwithmapsample.core.utils.formatCountryName
 import ru.mironov.appwithmapsample.core.utils.resource.Resource
 import ru.mironov.appwithmapsample.feature.search_city.data.models.City
 import ru.mironov.appwithmapsample.feature.search_city.data.models.CitiesResponse
@@ -214,7 +215,7 @@ private fun CityListItem(
         },
         supportingContent = {
             Text(
-                text = city.country,
+                text = formatCountryName(city.country),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
